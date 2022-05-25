@@ -157,7 +157,7 @@ if __name__ == '__main__':
                         help="Every how many epochs checkpoint the model.")
     args = parser.parse_args()
     # Setup CUDA, GPU & distributed training
-    device = torch.device("cuda:0" if torch.cuda.is_available() and not args.no_cuda else "cpu")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     args.n_gpu = torch.cuda.device_count()
     args.device = device
     train(args)
