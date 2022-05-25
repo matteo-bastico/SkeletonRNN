@@ -54,6 +54,8 @@ def collate(examples: List[torch.Tensor]):
 def train(args):
     # Use tensorboard summary
     tb_writer = SummaryWriter()
+    with open(tb_writer.logdir + "/args.txt", 'w+') as f:
+        f.write(repr(args))
     # Load Data
     skeletons = load_data(args.data_path) # List of sequences each of them [n_frames, n_points, 3]
     train_size = int(0.8 * len(skeletons))
@@ -64,8 +66,8 @@ def train(args):
                                                                                test_size=test_size,
                                                                                shuffle=True)
     # Generate Dataset
-    train_dataset = SkeletonDataset(train_skeletons[0:20], augment=True)
-    test_dataset = SkeletonDataset(test_skeletons[0:20], augment=True)
+    train_dataset = SkeletonDataset(train_skeletons, augment=True)
+    test_dataset = SkeletonDataset(test_skeletons, augment=True)
     train_sampler = RandomSampler(train_dataset)
     train_dataloader = DataLoader(
         train_dataset, sampler=train_sampler, batch_size=args.train_batch_size, collate_fn=collate
