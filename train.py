@@ -15,10 +15,7 @@ from utils.IOutils import load_data
 from utils.OneCycleLR import OneCycleLR
 from utils.Loss import maskedMSELoss
 
-try:
-    from torch.utils.tensorboard import SummaryWriter
-except ImportError:
-    from tensorboardX import SummaryWriter
+from tensorboardX import SummaryWriter
 
 torch.manual_seed(42)
 torch.cuda.manual_seed(42)
