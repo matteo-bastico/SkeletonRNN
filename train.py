@@ -123,7 +123,7 @@ def train(args):
         tr_loss = (tr_se/tot_tr_frames).mean().item()
         test_loss = (test_se/tot_test_frames).mean().item()
         tb_writer.add_scalar("lr", scheduler.get_lr(), global_step)
-        tb_writer.add_scalar("loss", (tr_loss) / len(epoch_iterator), global_step)
+        tb_writer.add_scalar("loss", tr_loss, global_step)
         tb_writer.add_scalar("test_loss", test_loss, global_step)
         # Save checkpoint
         if global_step % (len(epoch_iterator)*args.save_steps) == 0:
