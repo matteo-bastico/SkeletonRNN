@@ -20,5 +20,5 @@ def load_data(data_path, scale=1):
     for idx, skeleton in enumerate(skeletons):
         if skeleton.dtype == "object":
             skeletons[idx] = skeleton.astype('float32')
-    print("Total number of skeleton sequences in the data folder is: " + str(len(skeletons)))
+    print("Total number of skeleton sequences in the file: " + str(len(skeletons)))
     return skeletons
