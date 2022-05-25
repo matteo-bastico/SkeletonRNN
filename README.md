@@ -8,7 +8,7 @@ SkeletonRNN is a Recurrent Deep Neural Network to estimate miss-detected skeleto
     <img src="images/architecture.png" style="height: 300px">
 </p>
 
-# Dataset for SkeletonRNN training and testing
+# Dataset for training and testing
 
 <p>
 The train set contains 1035 sequences of 
