@@ -6,15 +6,13 @@ import sklearn.model_selection
 import numpy as np
 import torch.optim as optim
 
-from typing import List
 from torch.utils.data import DataLoader, RandomSampler
 from tqdm import tqdm, trange
 from Model.SkeletonRNN import SkeletonRNN
 from Dataset.SkeletonDataset import SkeletonDataset
 from utils.IOutils import load_data
 from utils.OneCycleLR import OneCycleLR
-from utils.Loss import maskedMSELoss
-
+from utils.TrainTools import maskedMSELoss, SkeletonCollator
 from tensorboardX import SummaryWriter
 
 torch.manual_seed(42)
@@ -23,29 +21,6 @@ np.random.seed(42)
 random.seed(42)
 
 _PAD_POINT = -100
-
-
-def collate(examples: List[torch.Tensor]):
-    # get the length of each sentence
-    # examples is a list of Tuple were the first elem is the input while the second is the label
-    # the lengths are the same for inputs and labels
-    inputs = [example[0] for example in examples]
-    labels = [example[1] for example in examples]
-    seq_lengths = [len(seq) for seq in inputs]
-    # create an empty matrix with padding tokens
-    longest_seq = max(seq_lengths)
-    batch_size = len(examples)
-    padded_batch = torch.ones((batch_size, longest_seq, inputs[0][0].shape[0], inputs[0][0].shape[1]),
-                              dtype=torch.float32) * _PAD_POINT  # copy over the actual sequences
-    padded_labels = torch.ones((batch_size, longest_seq, labels[0][0].shape[0],
-                                labels[0][0].shape[1]),
-                               dtype=torch.float32) * _PAD_POINT  # copy over the actual sequences
-    for i, seq_len in enumerate(seq_lengths):
-        seq = inputs[i]
-        label = labels[i]
-        padded_batch[i, 0:seq_len, :, :] = seq
-        padded_labels[i, 0:seq_len, :, :] = label
-    return padded_batch, padded_labels
 
 
 def train(args):
@@ -66,12 +41,13 @@ def train(args):
     train_dataset = SkeletonDataset(train_skeletons, augment=True)
     test_dataset = SkeletonDataset(test_skeletons, augment=True)
     train_sampler = RandomSampler(train_dataset)
+    skeleton_collator = SkeletonCollator(mask_token=_PAD_POINT)
     train_dataloader = DataLoader(
-        train_dataset, sampler=train_sampler, batch_size=args.train_batch_size, collate_fn=collate
+        train_dataset, sampler=train_sampler, batch_size=args.train_batch_size, collate_fn=skeleton_collator
     )
     test_sampler = RandomSampler(test_dataset)
     test_dataloader = DataLoader(
-        test_dataset, sampler=test_sampler, batch_size=args.test_batch_size, collate_fn=collate
+        test_dataset, sampler=test_sampler, batch_size=args.test_batch_size, collate_fn=skeleton_collator
     )
     # Create model
     skeletonRNN = SkeletonRNN(input_sz=args.input_size, hidden_sz=args.hidden_size,
@@ -97,8 +73,7 @@ def train(args):
             # Zero grad
             optimizer.zero_grad()
             predicted_points_seq, hidden_seq = skeletonRNN(input_batch)
-            se_points, valid_frames = maskedMSELoss(predicted_points_seq, labels,
-                                                    mask_token=_PAD_POINT)
+            se_points, valid_frames = maskedMSELoss(predicted_points_seq, labels, mask_token=_PAD_POINT)
             loss = se_points.mean()
             loss.backward()
             optimizer.step()
@@ -116,15 +91,14 @@ def train(args):
             labels = batch[1].to(args.device)
             with torch.no_grad():
                 predicted_points_seq, hidden_seq = skeletonRNN(input_batch)
-                se_points, valid_frames = maskedMSELoss(predicted_points_seq, labels,
-                                                    mask_token=_PAD_POINT)
+                se_points, valid_frames = maskedMSELoss(predicted_points_seq, labels, mask_token=_PAD_POINT)
                 test_se += se_points
                 tot_test_frames += valid_frames
         tr_loss = (tr_se/tot_tr_frames).mean().item()
         test_loss = (test_se/tot_test_frames).mean().item()
         tb_writer.add_scalar("lr", scheduler.get_lr(), global_step)
-        tb_writer.add_scalar("loss", tr_loss, global_step)
-        tb_writer.add_scalar("test_loss", test_loss, global_step)
+        tb_writer.add_scalar("train_mse [cm]", tr_loss, global_step)
+        tb_writer.add_scalar("test_mse [cm]", test_loss, global_step)
         # Save checkpoint
         if global_step % (len(epoch_iterator)*args.save_steps) == 0:
             save_dir = tb_writer.logdir
@@ -139,14 +113,14 @@ def train(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_path", type=str, default="Data/train/examples.npy",
-                        help="training data folder")
+                        help="training data")
     parser.add_argument("--num_train_epochs", default=1, type=int,
                         help="Total number of training epochs to perform.")
     parser.add_argument("--input_size", default=(18, 3), type=tuple,
                         help="(Skeleton points, dimensions)")
     parser.add_argument("--hidden_size", default=1024, type=int,
                         help="LSTM hidden size: 256, 512 or 1024")
-    parser.add_argument("--learning_rate", default=(1e-4, 1e-3), type=tuple,
+    parser.add_argument("--learning_rate", default=(1e-6, 1e-5), type=tuple,
                         help="The learning rate boundaries for OnceCyleLR.")
     parser.add_argument("--train_batch_size", default=4, type=int,
                         help="Batch size for training.")

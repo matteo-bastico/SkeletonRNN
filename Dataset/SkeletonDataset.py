@@ -99,7 +99,7 @@ class SkeletonDataset(Dataset):
         return masked_frames
 
 
-class SkeletonDataset_Test(Dataset):
+class SkeletonDatasetTest(Dataset):
     def __init__(self, skeletons: List, labels: List):
         """
         :param skeletons: List of skeletons sequences, each of them with the shape [n_frames, n_points, dims]. Example:
