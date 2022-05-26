@@ -22,9 +22,10 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
+<!--
   <a href="https://github.com/matteo-bastico/SkeletonRNN">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
+  </a>-->
 
 <h3 align="center">SkeletonRNN</h3>
 
@@ -42,8 +43,6 @@
     <a href="https://github.com/matteo-bastico/SkeletonRNN/issues">Request Feature</a>
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -71,18 +70,22 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+The extraction of 2D or 3D skeletons from images
+is a well-known procedure to perform data anonymization. 
+The skeleton estimation has been shown to be sometimes 
+disordered or not available and can provide wrong human 
+identification. Indeed, many points are likely to miss 
+causing issues in related tasks. 
+We present here the Deep Learning architecture proposed in ["Continuous Person Identification and Tracking in Healthcare by Integrating Accelerometer Data and Deep Learning Filled 3D Skeletons"](https://example.com/)
+to estimate missing 3D skeleton joints. 
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `matteo-bastico`, `SkeletonRNN`, `matteobastico`, `linkedin_username`, `email_client`, `email`, `SkeletonRNN`, `project_description`
+<p align="center">
+    <img height=300px src="images/architecture.png">
+</p>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 ### Built With
 
@@ -221,4 +224,3 @@ Project Link: [https://github.com/matteo-bastico/SkeletonRNN](https://github.com
 [license-url]: https://github.com/matteo-bastico/SkeletonRNN/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/matteo-bastico/
-[product-screenshot]: images/architecture.png
