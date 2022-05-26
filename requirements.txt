@@ -5,3 +5,4 @@ scipy~=1.7.2
 scikit-learn~=1.0.1
 tqdm~=4.64.0
 tensorboardx~=2.5
+protobuf~=3.19

@@ -30,7 +30,7 @@
 <h3 align="center">SkeletonRNN</h3>
 
   <p align="center">
-    SkeletonRNN is a Recurrent Deep Neural Network to estimate miss or wrongly detected 3D skeleton joints.  
+    SkeletonRNN is a variable length custom Recurrent Deep Neural Network to estimate miss or wrongly detected 3D skeleton joints.  
     <br />
     <a href="https://github.com/matteo-bastico/SkeletonRNN"><strong>Explore the docs »</strong></a>
     <br />
@@ -80,10 +80,25 @@ identification. Indeed, many points are likely to miss
 causing issues in related tasks. 
 We present here the Deep Learning architecture proposed in ["Continuous Person Identification and Tracking in Healthcare by Integrating Accelerometer Data and Deep Learning Filled 3D Skeletons"](https://example.com/)
 to estimate missing 3D skeleton joints. 
+In SkeletonRNN, the Long Short-Term Memory (LSTM) cells are modified such that the RNN hidden states are N x h matrices
+where N is the number of joints per skeleton and h is the hidden state size.
+In order to decode such hidden states into the prediction of the 3D skeleton joints for the next instance, 
+a convolutinal decoder is introduced.
+To overcome the issue of missing points in the input data, starting from the second RNN iteration, 
+we introduce an input refinement module.
 
 <p align="center">
     <img height=300px src="images/architecture.png">
 </p>
+
+### Citation
+
+Our paper is available in [IEEE Sensors](https://www.example.com) or 
+```sh
+  @article{
+    
+  }
+  ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -122,7 +137,7 @@ Our released implementation is tested on:
     ```sh
   pip install -r requirements.txt
   ```
-  Note: for Pytorch CUDA installation follow https://pytorch.org/get-started/locally/. Example CUDA 11.3
+  Note: for Pytorch CUDA installation follow https://pytorch.org/get-started/locally/. Example with CUDA 11.3:
   ```sh
   conda install pytorch==1.10 torchvision=0.11 torchaudio cudatoolkit=11.3 -c pytorch
   ```
@@ -134,9 +149,61 @@ Our released implementation is tested on:
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+### Dataset
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+The train set contains 1035 sequences of 
+complete skeletons which are augmented during 
+the training to simulate loss of joints. The test 
+set contains 259 sequences of skeletons 
+with missing points and the ground-truth is 
+provided. Both dataset are in the Data folder.
+
+Data are stored in .npy files. 
+Each of them contains a list of skeleton 
+sequences saved as Numpy array 
+with shape (L, N, D) where L is the sequence 
+length, N is the number of skeleton 
+points (18 for Intel RealSense) and D is the 
+dimensionality (3). In the testing dataset 
+missing points are represented with [-1, -1, -1]. 
+Training skeletons are all complete, 
+i.e. without missing points.
+
+### Training
+
+To replicate best results of the paper
+```sh
+  python train.py -d "Data/train/examples.npy" -e 1000 -i 18 3 -hs 1024 -lr 1e-6 1e-5 -tb 8 -eb 8 -s 100
+  ```
+
+Parameters:
+* -d : Training data path
+* -e : Number of training epochs
+* -i : Input format (N:Number of joints, D:Dimensions)
+* -hs : LSTM hidden layer size. Options: 256, 512, 1024
+* -lr : One-Cycle policy learning rates (max_lr, min_lr)
+* -tb : Test batch size
+* -eb : Evaluation batch size
+* -s : Every how many epochs save checkpoint of the model
+
+The results of the training (args, tensorboard summary and checkpoints) are saved in the runs folder.
+Note: The GPU is automatically detected for training. 
+
+### Testing 
+
+```sh
+  python test.py -d "Data/test/examples.npy" -l "Data/test/labels.npy" -i 18 3 -hs 1024 -tb 8 -chk path_to_last_chk
+  ```
+
+Parameters:
+* -d : Testing data path
+* -l : Ground-truth data path
+* -i : Input format (N:Number of joints, D:Dimensions)
+* -hs : LSTM hidden layer size. Options: 256, 512, 1024
+* -tb : Test batch size
+* -chk : Path to checkpoint to test
+
+Note: The GPU is automatically detected for testing. 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -145,10 +212,12 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
+- [ ] CUDA distributed implementation
+- [ ] Skeletons graphical visualization
+<!--
 - [ ] Feature 2
 - [ ] Feature 3
-    - [ ] Nested Feature
+    - [ ] Nested Feature-->
 
 See the [open issues](https://github.com/matteo-bastico/SkeletonRNN/issues) for a full list of proposed features (and known issues).
 
@@ -159,15 +228,13 @@ See the [open issues](https://github.com/matteo-bastico/SkeletonRNN/issues) for 
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star! Thanks again!
 
 1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
+2. Create your Feature Branch (`git checkout -b feature/my_feature`)
+3. Commit your Changes (`git commit -m 'Add my_feature'`)
+4. Push to the Branch (`git push origin feature/my_feature`)
 5. Open a Pull Request
 
 <p align="right">(<a href="#top">back to top</a>)</p>
