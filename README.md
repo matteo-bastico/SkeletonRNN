@@ -51,6 +51,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#citation">Citation</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -61,7 +62,13 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li><a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#dataset">Dataset</a></li>
+        <li><a href="#training">Training</a></li>
+        <li><a href="#testing">Testing</a></li>
+      </ul>
+    </li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
