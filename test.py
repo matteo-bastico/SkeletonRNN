@@ -45,7 +45,7 @@ def test(args):
             se_points, valid_frames = maskedMSELoss(predicted_points_seq, labels, mask_token=_PAD_POINT)
             se_total += se_points
             tot_valid_frames += valid_frames
-    mse_total = (se_total / valid_frames).mean()
+    mse_total = (se_total / tot_valid_frames).mean()
     mse_x = (se_total / tot_valid_frames)[:, 0].mean()
     mse_y = (se_total / tot_valid_frames)[:, 1].mean()
     mse_z = (se_total / tot_valid_frames)[:, 2].mean()
@@ -71,7 +71,7 @@ def test(args):
                         err = torch.abs(predict_frame - frame) * 100
                         sd_total += (err - torch.tensor([100 * torch.sqrt(mse_x),
                                                          100 * torch.sqrt(mse_y),
-                                                         100 * torch.sqrt(mse_z)])) ** 2
+                                                         100 * torch.sqrt(mse_z)], device=args.device)) ** 2
     sd_coord = torch.sqrt(sd_total / len(test_iterator)).mean(axis=0)
     print("Total SD x MSE in cm: %.2f" % float(sd_coord[0]))
     print("Total SD y MSE in cm: %.2f" % float(sd_coord[1]))
