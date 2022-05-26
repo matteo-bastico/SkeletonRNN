@@ -108,19 +108,23 @@ Our released implementation is tested on:
 
 ### Prerequisites
 
-* create and lunch conda environment
+* Create and lunch conda environment
   ```sh
   conda create -n SkeletonRNN python=3.9
   conda activate SkeletonRNN
   ```
 ### Installation
-* clone project
+* Clone project
    ```sh
   git clone https://github.com/matteo-bastico/SkeletonRNN.git
   ```
-* install dependencies
+* Install dependencies
     ```sh
-  git pip install -r requirements.txt
+  pip install -r requirements.txt
+  ```
+  Note: for Pytorch CUDA installation follow https://pytorch.org/get-started/locally/. Example CUDA 11.3
+  ```sh
+  conda install pytorch==1.10 torchvision=0.11 torchaudio cudatoolkit=11.3 -c pytorch
   ```
   
 <p align="right">(<a href="#top">back to top</a>)</p>
