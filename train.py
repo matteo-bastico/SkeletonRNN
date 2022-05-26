@@ -112,23 +112,25 @@ def train(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data_path", type=str, default="Data/train/examples.npy",
+    parser.add_argument("-d", "--data-path", type=str, default="Data/train/examples.npy",
                         help="training data")
-    parser.add_argument("--num_train_epochs", default=1, type=int,
+    parser.add_argument("-e", "--num-train-epochs", default=1, type=int,
                         help="Total number of training epochs to perform.")
-    parser.add_argument("--input_size", default=(18, 3), type=tuple,
+    parser.add_argument("-i", "--input-size", default=[18, 3], nargs=2, type=int,
                         help="(Skeleton points, dimensions)")
-    parser.add_argument("--hidden_size", default=1024, type=int,
+    parser.add_argument("-hs", "--hidden-size", default=1024, type=int,
                         help="LSTM hidden size: 256, 512 or 1024")
-    parser.add_argument("--learning_rate", default=(1e-6, 1e-5), type=tuple,
+    parser.add_argument("-lr", "--learning-rate", default=[1e-6, 1e-5], nargs=2, type=float,
                         help="The learning rate boundaries for OnceCyleLR.")
-    parser.add_argument("--train_batch_size", default=4, type=int,
+    parser.add_argument("-tb", "--train-batch-size", default=4, type=int,
                         help="Batch size for training.")
-    parser.add_argument("--test_batch_size", default=1, type=int,
+    parser.add_argument("-eb", "--test-batch-size", default=1, type=int,
                         help="Batch size for testing.")
-    parser.add_argument("--save_steps", default=1, type=int,
+    parser.add_argument("-s", "--save-steps", default=1, type=int,
                         help="Every how many epochs checkpoint the model.")
     args = parser.parse_args()
+    args.input_size = tuple(args.input_size)
+    args.learning_rate = tuple(args.learning_rate)
     # Setup CUDA, GPU & distributed training
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     args.n_gpu = torch.cuda.device_count()

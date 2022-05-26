@@ -4,7 +4,7 @@ import random
 import numpy as np
 
 from torch.utils.data import DataLoader
-from tqdm import tqdm, trange
+from tqdm import tqdm
 from Model.SkeletonRNN import SkeletonRNN
 from Dataset.SkeletonDataset import SkeletonDatasetTest
 from utils.TrainTools import maskedMSELoss, SkeletonCollator
@@ -62,8 +62,6 @@ def test(args):
         labels = batch[1].to(args.device)
         with torch.no_grad():
             predicted_points_seq, _ = skeletonRNN(input_batch)
-            err_points = torch.zeros(((predicted_points_seq.shape[2]),
-                                      predicted_points_seq.shape[3]), dtype=torch.float32, device=args.device)
             for idx_b, batch in enumerate(labels):
                 for idx_f, frame in enumerate(batch):
                     predict_frame = predicted_points_seq[idx_b, idx_f, :, :]
@@ -80,19 +78,20 @@ def test(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data_path", type=str, default="Data/test/examples.npy",
+    parser.add_argument("-d", "--data-path", type=str, default="Data/test/examples.npy",
                         help="testing data")
-    parser.add_argument("--labels_path", type=str, default="Data/test/labels.npy",
+    parser.add_argument("-l", "--labels-path", type=str, default="Data/test/labels.npy",
                         help="ground truth labels data")
-    parser.add_argument("--input_size", default=(18, 3), type=tuple,
+    parser.add_argument("-i", "--input-size", default=[18, 3], nargs=2, type=int,
                         help="(Skeleton points, dimensions)")
-    parser.add_argument("--hidden_size", default=1024, type=int,
+    parser.add_argument("-hs", "--hidden-size", default=1024, type=int,
                         help="LSTM hidden size: 256, 512 or 1024")
-    parser.add_argument("--test_batch_size", default=1, type=int,
+    parser.add_argument("-tb", "--test-batch_size", default=1, type=int,
                         help="Batch size for testing.")
-    parser.add_argument("--checkpoint", default="runs/May26_11-15-32_MacBook-Pro-di-Matteo-2.local/checkpoint_207.pt", type=str,
+    parser.add_argument("-chk", "--checkpoint", default="runs/May26_11-15-32_MacBook-Pro-di-Matteo-2.local/checkpoint_207.pt", type=str,
                         help="Model checkpoint to be trained")
     args = parser.parse_args()
+    args.input_size = tuple(args.input_size)
     # Setup CUDA, GPU & distributed training
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     args.n_gpu = torch.cuda.device_count()
