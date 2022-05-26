@@ -191,7 +191,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@matteobastico](https://twitter.com/matteobastico) - matteo.bastico@gmail.com
+Matteo Bastico - [@matteobastico](https://twitter.com/matteobastico) - matteo.bastico@gmail.com
 
 Project Link: [https://github.com/matteo-bastico/SkeletonRNN](https://github.com/matteo-bastico/SkeletonRNN)
 
@@ -202,9 +202,8 @@ Project Link: [https://github.com/matteo-bastico/SkeletonRNN](https://github.com
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
+This  work  was  supported  by  the  H2020  European  Project: Procare4Life https://procare4life.eu/  web Grant no. 875221. The authors are with the Escuela Técnica Superior de Ingenieros de
+Telecomunicación, Universidad Politécnica de Madrid, 28040 Madrid, Spain (e-mail: mab@gatv.ssr.upm.es, abh@gatv.ssr.upm.es, fag@gatv.ssr.upm.es).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
