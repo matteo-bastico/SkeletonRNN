@@ -88,15 +88,16 @@ to estimate missing 3D skeleton joints.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Built With
-
-* [Next.js](https://nextjs.org/)
-* [React.js](https://reactjs.org/)
-* [Vue.js](https://vuejs.org/)
-* [Angular](https://angular.io/)
-* [Svelte](https://svelte.dev/)
-* [Laravel](https://laravel.com)
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
+Our released implementation is tested on:
+* Ubuntu 20.04 / macOS 11.5
+* Python 3.9.7
+* Pytorch 1.10 / torchvison 0.11.1
+* NVIDIA CUDA 11.3
+* TensorboardX 2.5
+* Scikit-learn 1.0.1
+* SciPy 1.7.2
+* tqdm 4.64
+* 1x NVIDIA GeForce GTX 1080 Ti
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -105,33 +106,23 @@ to estimate missing 3D skeleton joints.
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
+* create and lunch conda environment
   ```sh
-  npm install npm@latest -g
+  conda create -n SkeletonRNN python=3.9
+  conda activate SkeletonRNN
   ```
-
 ### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+* clone project
    ```sh
-   git clone https://github.com/matteo-bastico/SkeletonRNN.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
+  git clone https://github.com/matteo-bastico/SkeletonRNN.git
+  ```
+* install dependencies
+    ```sh
+  git pip install -r requirements.txt
+  ```
+  
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
