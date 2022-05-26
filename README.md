@@ -174,7 +174,8 @@ points (18 for Intel RealSense) and D is the
 dimensionality (3). In the testing dataset 
 missing points are represented with [-1, -1, -1]. 
 Training skeletons are all complete, 
-i.e. without missing points.
+i.e. without missing points. 
+The original dataset also for Person Identification and Tracking (PIT) can be downloaded from https://drive.upm.es/s/3zgeHKhlbWYcow1.
 
 ### Training
 
