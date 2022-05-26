@@ -70,7 +70,7 @@ def test(args):
                         sd_total += (err - torch.tensor([100 * torch.sqrt(mse_x),
                                                          100 * torch.sqrt(mse_y),
                                                          100 * torch.sqrt(mse_z)], device=args.device)) ** 2
-    sd_coord = torch.sqrt(sd_total / len(test_iterator)).mean(axis=0)
+    sd_coord = torch.sqrt(sd_total / len(test_dataset)).mean(axis=0)
     print("Total SD x MSE in cm: %.2f" % float(sd_coord[0]))
     print("Total SD y MSE in cm: %.2f" % float(sd_coord[1]))
     print("Total SD z MSE in cm: %.2f" % float(sd_coord[2]))
