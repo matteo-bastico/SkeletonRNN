@@ -175,7 +175,7 @@ dimensionality (3). In the testing dataset
 missing points are represented with [-1, -1, -1]. 
 Training skeletons are all complete, 
 i.e. without missing points. 
-The original dataset also for Person Identification and Tracking (PIT) can be downloaded from https://drive.upm.es/s/3zgeHKhlbWYcow1.
+The original dataset also for [Person Identification and Tracking (PIT)](https://github.com/matteo-bastico/Mutisensor-PIT) can be downloaded from https://drive.upm.es/s/3zgeHKhlbWYcow1.
 
 ### Training
 
