@@ -139,6 +139,7 @@ Our released implementation is tested on:
 * Clone project
    ```sh
   git clone https://github.com/matteo-bastico/SkeletonRNN.git
+  cd SkeletonRNN
   ```
 * Install dependencies
     ```sh
