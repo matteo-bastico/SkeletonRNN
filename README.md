@@ -100,11 +100,17 @@ we introduce an input refinement module.
 
 ### Citation
 
-Our paper is available in [IEEE Sensors](https://www.example.com) or 
+Our paper is available in [IEEE Sensors](https://ieeexplore.ieee.org/document/9813452) or 
 ```sh
-  @article{
-    
-  }
+  @ARTICLE{9813452,
+  author={Bastico, Matteo and Belmonte-Hernández, Alberto and García, Federico Álvarez},
+  journal={IEEE Sensors Journal}, 
+  title={Continuous Person Identification and Tracking in Healthcare by Integrating Accelerometer Data and Deep Learning Filled 3D Skeletons}, 
+  year={2022},
+  volume={22},
+  number={15},
+  pages={15402-15409},
+  doi={10.1109/JSEN.2022.3186499}}
   ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
